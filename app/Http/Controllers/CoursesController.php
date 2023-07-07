@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CoursesController extends Controller
 {
@@ -45,7 +46,23 @@ class CoursesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(),[
+            'name'=> 'required:max:191',
+            'description'=>'required:max:191',
+        ]);
+        if ($validate->failed()) {
+            return response()->json([
+                'validate'=>$validate->errors()->messages(),
+            'success'=>false
+            ]);
+        }
+        $course = new Course($request->all());
+        $course->save();
+        $courses = Course::all();
+        return response()->json([
+            'courses'=> $courses,
+            'success'=>true
+        ]);
     }
 
     /**
@@ -79,7 +96,28 @@ class CoursesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = Validator::make($request->all(),[
+            'name'=> 'required:max:191',
+            'description'=>'required:max:191',
+        ]);
+        if ($validate->failed()) {
+            return response()->json([
+                'validate'=>$validate->errors()->messages(),
+            'success'=>false
+
+            ]);
+        }
+        $course = Course::find($id);
+        $course->name = $request->name;
+        $course->description = $request->description;
+        $course->startdate = $request->startdate;
+        $course->enddate = $request->enddate;
+        $course->save();
+        $courses = Course::all();
+        return response()->json([
+            'courses'=> $courses,
+            'success'=>true
+        ]);
     }
 
     /**
@@ -90,6 +128,44 @@ class CoursesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        try {
+            Course::find($id)->delete();
+            $courses = Course::all();
+            return response()->json([
+                'courses'=> $courses,
+                'success'=>true
+            ]);
+            
+        } catch (\Throwable $th) {
+        $courses = Course::all();
+            
+            return response()->json([
+                'courses'=> $courses,
+                'success'=>false
+            ]);
+        }         
+        
+    }
+    public function delete($arr)
+    {
+        
+        try {
+            Course::whereIN('id',$arr)->delete();
+            $courses = Course::all();
+            return response()->json([
+                'courses'=> $courses,
+                'success'=>true
+            ]);
+            
+        } catch (\Throwable $th) {
+        $courses = Course::all();
+            
+            return response()->json([
+                'courses'=> $courses,
+                'success'=>false
+            ]);
+        }         
+        
     }
 }

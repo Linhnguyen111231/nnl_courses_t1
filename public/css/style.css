@@ -1,3 +1,8 @@
+body{
+    
+    position: relative;
+    
+}
 .func{
     min-width: 300px;
     height: 100%;
@@ -37,6 +42,22 @@
     position: relative;
     right: 0;
 }
+
+.form-c > div > label> .info{
+    padding: 4px 8px;
+    min-width: 600px;
+    
+
+}
+.form-c > div > label > span{
+   text-align: right;
+}
+.form-c > div > label {
+    
+    display: flex !important;
+        align-items: baseline;
+        justify-content: space-around;
+ }
 .form-search >input{
     right: 0;
     width: 300px;
@@ -50,4 +71,76 @@
     background-image: url(../img/loader.gif);
     background-position: center;
     background-repeat: no-repeat;
+    z-index: 9999;
+    overflow: hidden;
 }
+.success{
+    display: flex;
+    background-color: #fff;
+    max-width: 500px;
+    border-left: 7px solid greenyellow;
+    border-top: 1px solid greenyellow;
+    border-bottom: 1px solid greenyellow;
+    border-right: 1px solid greenyellow;
+}
+.success, .error{
+    position: absolute;
+    bottom: 100px;
+    right: 30px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    z-index: 999;
+    animation: success linear 3s;
+}
+@keyframes success {
+    0%{
+        bottom: 20%;
+        opacity: 1;
+        
+    }
+    100%{
+        bottom: 700px;
+        opacity: 0;
+        display: none;
+    }
+}
+.error{
+    display: flex;
+    max-width: 500px;
+    border-left: 7px solid rgb(148, 47, 47);
+    border-top: 1px solid rgb(148, 47, 47);
+    border-bottom: 1px solid rgb(148, 47, 47);
+    border-right: 1px solid rgb(148, 47, 47);
+}
+.box-er,
+.box-sc{
+    width: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.box-er{
+    color: rgb(148, 47, 47);
+
+}
+.box-sc{
+    color: greenyellow;
+}
+.content-error,
+.content-succsess{
+    padding: 6px 12px;
+    
+}
+.content-succsess > .tiltel{
+    color:greenyellow;
+    font-size: 24px;
+
+}
+.content-error > .tiltel{
+    color: rgb(148, 47, 47);
+    font-size: 24px;
+
+}
+.n-sc,.n-er{display: none;}
