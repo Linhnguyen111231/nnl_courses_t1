@@ -18,9 +18,9 @@ class CourseFactory extends Factory
     {
         return [
             'name'=> $this->faker->name,
-            'description'=> $this->faker->title,
-            'startdate'=> $this->faker->time,
-            'enddate'=> $this->faker->time,
+            'description'=> $this->faker->text,
+            'startdate'=> $this->faker->dateTime,
+            'enddate'=> $this->faker->dateTime,
         ];
     }
 }

@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <td>Check All <input type="checkbox" id="checkall" name="checkall"> <button id="btnAll" class="btn btn-danger">Delete Selected</button></td>
-                    <td>Name</td>
+                    <td style="white-space: nowrap">Name <span id="sortAZ"><i class="fa-solid fa-arrow-up-a-z"></i></span> | <span id="sortZA"><i class="fa-solid fa-arrow-down-z-a"></i></span></td>
                     <td>Description</td>
                     <td>Start Date</td>
                     <td>End Date</td>
@@ -19,20 +19,12 @@
                 
             </thead>
             <tbody id="renderTB"  >
-                @foreach ($courses as $item)
-                <tr>
-                    <td> <input type="checkbox" data-item="{{$item->id}}" class="checklist"></td>
-                    <td>{{$item->name}}</td>
-                    <td>{{$item->desciption}}</td>
-                    <td>{{$item->startdate}}</td>
-                    <td>{{$item->enddate}}</td>
-                    <td><button class="btn btn-primary">Edit</button> | <button data-item="{{$item->id}}" class="btn btn-danger btnDelete">Delete</button></td>
-                </tr>
-                @endforeach
+            
+                
             </tbody>
         </table> 
         <div>
-            <ul>
+            <ul class="page-url">
                 <li class="rounded-circle page"><span>Pre</span></li>
                 <li class="rounded-circle page active"><span>1</span></li>
                 <li class="rounded-circle page"><span>2</span></li>
@@ -42,58 +34,89 @@
         </div>
     </div>
     <form class="form-control text-center form-c mt-5">
+        @csrf
         <h1>ADD COURSES</h1>
         <div class="text-right">
             <label for="name" class="d-block">
                 <span>Name:</span>
-                <input type="text"  class="mt-3 ml-5 info" placeholder="Name..." id="name" name="name" >
+                <div>
+                    <input type="text"  class="mt-3 ml-5 info" placeholder="Name..." id="name" name="name" >
+                <div class="error-text"></div>
+                </div>
             </label>
             <label for="start" class="d-block">
                 <span>Start Date:</span> 
-                <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="Start Date..." id="start" name="start">
+                <div>
+                    <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="Start Date..." id="start" name="start">
+                <div class="error-text"></div>
+                </div>
+           
             </label>
             <label for="end" class="d-block">
                 <span>End Date:</span> 
-                <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="End Date..." id="end" name="end">
+                <div>
+                    <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="End Date..." id="end" name="end">
+                <div class="error-text"></div>
+                </div>
+            
             </label>
             <label for="desciption" class="d-block">
                 <span>Description:</span>
-                <textarea name="desciption" id="desciption" class="mt-3 ml-5 info" cols="30" rows="10"></textarea>
+                <div>
+                    <textarea name="desciption" id="desciption" class="mt-3 ml-5 info" cols="30" rows="10"></textarea>
+                <div class="error-text"></div>
+                </div>
+
             </label>
             <div class="text-center">
                 <button class="btn btn-primary" id="add">Add</button>
-            <button class="btn btn-primary" id="cancel">Cancel</button>
+            <button class="btn btn-danger" id="cancel">Cancel</button>
             </div>
         </div>
     </form>
-    <div class="n-sc"> 
-        <div class="success">
-            <div class="box-sc">
-                <i class="fa-solid fa-check"></i>
-            </div>
-            <div class="content-succsess">
-                <div class="tiltle">
-                    Success
+    <div class="edit-item">
+        <form class="form-control text-center form-edit mt-5">
+            @csrf
+            <h1>EDIT COURSES</h1>
+            <div class="text-right">
+                <label for="nameED" class="d-block">
+                    <span>Name:</span>
+                    <div>
+                        <input type="text"  class="mt-3 ml-5 info" placeholder="Name..." id="nameED" name="name" >
+                    <div class="error-text"></div>
+                    </div>
+                </label>
+                <label for="startED" class="d-block">
+                    <span>Start Date:</span> 
+                    <div>
+                        <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="Start Date..." id="startED" name="start">
+                    <div class="error-text"></div>
+                    </div>
+               
+                </label>
+                <label for="endED" class="d-block">
+                    <span>End Date:</span> 
+                    <div>
+                        <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="End Date..." id="endED" name="end">
+                    <div class="error-text"></div>
+                    </div>
+                
+                </label>
+                <label for="desciptionED" class="d-block">
+                    <span>Description:</span>
+                    <div>
+                        <textarea name="desciption" id="desciptionED" class="mt-3 ml-5 info" cols="30" rows="10"></textarea>
+                    <div class="error-text"></div>
+                    </div>
+    
+                </label>
+                <div class="text-center">
+                    <button class="btn btn-primary" id="update">Update</button>
+                <button class="btn btn-danger" id="cancelEdit">Cancel</button>
                 </div>
-                <div class="decription-sc">
-                    Add course successfully!
-                </div>
             </div>
-        </div>
+        </form>
     </div>
-    <div class="n-er">
-        <div class="error">
-            <div class="box-er">
-                <i class="fa-solid fa-exclamation"></i>
-            </div>
-            <div class="content-error">
-                <div class="tiltle">
-                    Warning
-                </div>
-                <div class="decription-sc">
-                    Add course don't successfully!
-                </div>
-            </div>
-        </div>
-    </div>
+    
+    
 @endsection

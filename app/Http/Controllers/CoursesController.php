@@ -16,7 +16,14 @@ class CoursesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request) {
-        $search = Course::where('name','LIKE','%'.$request->key.'%')->get();
+        $search = Course::where('name','LIKE','%'.$request->key.'%');
+        if ($request->sort == 'increaseName') {
+            $search= $search->orderBy('name','asc');
+        }else if ($request->sort == 'reduceName') {
+            $search= $search->orderBy('name','desc');
+
+        }
+        $search= $search->paginate(2, ['*'], 'page', $request->page);
         return response()->json([
             'search'=> $search
         ]);
@@ -47,22 +54,26 @@ class CoursesController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(),[
-            'name'=> 'required:max:191',
-            'description'=>'required:max:191',
+            'name'=> 'required|max:191',
+            'startdate'=>'required',
+            'enddate'=>'required',
+            'description'=>'required|max:191',
         ]);
-        if ($validate->failed()) {
+        if ($validate->fails()) {
             return response()->json([
                 'validate'=>$validate->errors()->messages(),
-            'success'=>false
+            'result'=>false
             ]);
-        }
-        $course = new Course($request->all());
+        }else{
+            $course = new Course($request->all());
         $course->save();
-        $courses = Course::all();
         return response()->json([
-            'courses'=> $courses,
-            'success'=>true
-        ]);
+
+            'result'=>true
+        ]); 
+        }
+        
+       
     }
 
     /**
@@ -131,9 +142,9 @@ class CoursesController extends Controller
         
         try {
             Course::find($id)->delete();
-            $courses = Course::all();
+           
             return response()->json([
-                'courses'=> $courses,
+                
                 'success'=>true
             ]);
             
@@ -141,20 +152,20 @@ class CoursesController extends Controller
         $courses = Course::all();
             
             return response()->json([
-                'courses'=> $courses,
+                
                 'success'=>false
             ]);
         }         
         
     }
-    public function delete($arr)
+    public function delete(Request $request)
     {
         
         try {
-            Course::whereIN('id',$arr)->delete();
-            $courses = Course::all();
+            Course::whereIN('id',$request->arr)->delete();
+           
             return response()->json([
-                'courses'=> $courses,
+                
                 'success'=>true
             ]);
             
