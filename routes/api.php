@@ -23,7 +23,8 @@ Route::post('/add-course',[CoursesController::class,'store']);
 Route::post('/delete/selected',[CoursesController::class,'delete']);
 Route::delete('/delete/{id}',[CoursesController::class,'destroy']);
 Route::post('/delete/all',[CoursesController::class,'delete']);
-
+Route::post('/edit/show/{id}',[CoursesController::class,'show']);
+Route::put('/edit-course/{id}',[CoursesController::class,'update']);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

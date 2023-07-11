@@ -20,7 +20,7 @@
                       </ul>
                 </div>
             </div>
-           <div class="col-md-10">
+           <div class="col-md-10 md-12">
             <div class="container">
             
                 @yield('content')
@@ -100,6 +100,7 @@
             </div>
         </div>
     </div>
+    
     <script src="{{asset('js/app.js')}}"></script>
 </body>
 </html>

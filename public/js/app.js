@@ -16,6 +16,8 @@ const sortAZ = document.getElementById("sortAZ");
 const sortZA = document.getElementById("sortZA");
 const checkList = document.querySelectorAll(".checklist");
 const pageURL = document.querySelector(".page-url");
+const inforOF = document.querySelectorAll(".info");
+const errorText = document.querySelectorAll(".error-text");
 
 let page = 1
 
@@ -35,6 +37,22 @@ searchKey(keySearch,'');
     
 
 }
+inforOF.forEach((e)=>{
+    e.addEventListener('change',(el)=>{
+        if (el.target.name =='name') {
+            errorText[0].style.display = 'none'
+        }
+        if (el.target.name =='start') {
+            errorText[1].style.display = 'none'
+        }
+        if (el.target.name =='end') {
+            errorText[2].style.display = 'none'
+        }
+        if (el.target.name =='description') {
+            errorText[3].style.display = 'none'
+        }
+    })
+})
 search.addEventListener("keyup", (e) => {
     keySearch = e.target.value
     searchKey(keySearch,'');
@@ -162,10 +180,10 @@ async function searchKey(key,sort) {
         render += ` <tr>
         <td> <input type="checkbox" ${checkAll.getAttribute('checked')?'checked': ''} class="checklist" name="checkall"></td>
         <td>${e.name}</td>
-        <td>${e.description}</td>
-        <td>${e.startdate}</td>
-        <td>${e.enddate}</td>
-        <td style="white-space: nowrap"><button class="btn btnEdit btn-primary">Edit</button> | <button data-item="${e.id}" class="btn btn-danger btnDelete">Delete</button></td>
+        <td class="mbl-none" >${e.description}</td>
+        <td class="mbl-none">${e.startdate}</td>
+        <td class="mbl-none">${e.enddate}</td>
+        <td style="white-space: nowrap"><button class="btn btnEdit btn-primary" data-id='${e.id}'>Edit</button> | <button data-item="${e.id}" class="btn btn-danger btnDelete">Delete</button></td>
     </tr>`;
     });
     let rederURL = ''
@@ -224,10 +242,17 @@ async function searchKey(key,sort) {
     })
     const edit = document.querySelectorAll('.btnEdit')
     const cancel = document.getElementById('cancelEdit')
+    const update = document.getElementById('update')
     edit.forEach((e)=>{
         e.addEventListener('click',(el)=>{
-           
+            console.log(el.target.getAttribute('data-id'));
             formEdit.style.display ='block'
+            showEdit(el.target.getAttribute('data-id'));
+            update.addEventListener('click',()=>{
+                    editCourses(el.target.getAttribute('data-id'))
+                    searchKey(keySearch,sortB)
+
+                })
             cancel.addEventListener('click',()=>{
                 formEdit.style.display = 'none'
             })
@@ -235,6 +260,89 @@ async function searchKey(key,sort) {
     })
     
 
+}
+async function showEdit(id) {
+    const description = document.querySelector('.inforEditDescription');
+
+    
+    const data = document.querySelectorAll('.inforEdit')
+    const url = "http://127.0.0.1:8000/api/edit/show/"+id;
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+    });
+    const result = await response.json(); 
+   
+        data[0].value = result.course.name
+        description.innerText = result.course.description
+        data[1].value = result.course.startdate
+        data[2].value = result.course.enddate
+
+}
+async function editCourses(id) {
+    const description = document.querySelector('.inforEditDescription').value;
+    const data = document.querySelectorAll('.inforEdit')
+
+
+    const url = "http://127.0.0.1:8000/api/edit-course/"+id;
+    const dataSV = {
+        name: data[0].value,
+        description: description,
+        startdate: data[1].value,
+        enddate: data[2].value,
+        
+    };
+    const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+        },
+        body: JSON.stringify(dataSV),
+    });
+    const result = await response.json(); 
+    if (result.success == true) {
+        successForm.style.display = 'block'
+        const sokay = document.querySelector('.s-okay')
+        const sctn = document.querySelector('.s-ctn')
+        sokay.addEventListener('click',()=>{
+            successForm.style.display = 'none'
+            formEdit.style.display = 'none'
+
+        })
+        sctn.addEventListener('click',()=>{
+         successForm.style.display = 'none'
+
+        })
+    }else{
+        errorForm.style.display = 'block'
+    const inforEr = document.querySelectorAll('.error-text')
+        if (result.validate.name) {
+            inforEr[0].innerText = result.validate.name[0];
+            
+        }
+        if (result.validate.startdate) {
+            inforEr[1].innerText = result.validate.startdate[0];
+            
+        }
+        if (result.validate.enddate) {
+            inforEr[2].innerText = result.validate.enddate[0];
+            
+        }
+        if (result.validate.description) {
+            inforEr[3].innerText = result.validate.description[0];
+            
+        } 
+        
+        const erctn = document.querySelector('.er-ctn')
+        erctn.addEventListener('click',()=>{
+            errorForm.style.display = 'none'
+   
+           })
+    }
 }
 checkAll.addEventListener("click", (e) => {
 const checkL = document.querySelectorAll('.checklist')
@@ -254,8 +362,6 @@ const checkL = document.querySelectorAll('.checklist')
             arrCourses = [];
         });
     }
-    console.log(arrCourses);
-    console.log(arrCourses);
 });
 eventPoint.forEach((e) => {
     e.addEventListener("click", (el) => {
@@ -281,6 +387,7 @@ eventPoint.forEach((e) => {
         }
     });
 });
+
 add.addEventListener("click", (e) => {
     e.preventDefault();
     addcourses()
@@ -319,9 +426,7 @@ async function addcourses() {
         })
     }else{
         errorForm.style.display = 'block'
-    const inforEr = document.querySelectorAll('.error-text') 
-        console.log(result.validate.name);
-        console.log(result.validate);
+    const inforEr = document.querySelectorAll('.error-text')
         if (result.validate.name) {
             inforEr[0].innerText = result.validate.name[0];
             

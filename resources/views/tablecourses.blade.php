@@ -1,6 +1,7 @@
 @extends('layouts.layout')
 @section('content')
-    <div class=" tableC">
+    <div class=" tableC mt-5">
+        <h1 class="text-center">COURSES</h1>
        <form class="form-search" >
         <input type="text" id="search" placeholder="Search..." class="">
        <span class="icon-search"><i class="fa-solid fa-magnifying-glass"></i></span>
@@ -11,9 +12,9 @@
                 <tr>
                     <td>Check All <input type="checkbox" id="checkall" name="checkall"> <button id="btnAll" class="btn btn-danger">Delete Selected</button></td>
                     <td style="white-space: nowrap">Name <span id="sortAZ"><i class="fa-solid fa-arrow-up-a-z"></i></span> | <span id="sortZA"><i class="fa-solid fa-arrow-down-z-a"></i></span></td>
-                    <td>Description</td>
-                    <td>Start Date</td>
-                    <td>End Date</td>
+                    <td class="mbl-none">Description</td>
+                    <td class="mbl-none">Start Date</td>
+                    <td class="mbl-none">End Date</td>
                     <td>Event</td>
                 </tr>
                 
@@ -82,14 +83,14 @@
                 <label for="nameED" class="d-block">
                     <span>Name:</span>
                     <div>
-                        <input type="text"  class="mt-3 ml-5 info" placeholder="Name..." id="nameED" name="name" >
+                        <input type="text"  class="mt-3 ml-5 info inforEdit" placeholder="Name..." id="nameED" name="nameEdit" >
                     <div class="error-text"></div>
                     </div>
                 </label>
                 <label for="startED" class="d-block">
                     <span>Start Date:</span> 
                     <div>
-                        <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="Start Date..." id="startED" name="start">
+                        <input type="datetime-local"  class="mt-3 ml-5 info inforEdit" placeholder="Start Date..." id="startED" name="startEdit">
                     <div class="error-text"></div>
                     </div>
                
@@ -97,7 +98,7 @@
                 <label for="endED" class="d-block">
                     <span>End Date:</span> 
                     <div>
-                        <input type="datetime-local"  class="mt-3 ml-5 info" placeholder="End Date..." id="endED" name="end">
+                        <input type="datetime-local"  class="mt-3 ml-5 info inforEdit" placeholder="End Date..." id="endED" name="endEdit">
                     <div class="error-text"></div>
                     </div>
                 
@@ -105,7 +106,7 @@
                 <label for="desciptionED" class="d-block">
                     <span>Description:</span>
                     <div>
-                        <textarea name="desciption" id="desciptionED" class="mt-3 ml-5 info" cols="30" rows="10"></textarea>
+                        <textarea name="desciption" id="desciptionED" class="mt-3 ml-5 info inforEditDescription" cols="30" rows="10"></textarea>
                     <div class="error-text"></div>
                     </div>
     

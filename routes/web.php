@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('index',[OrderController::class,'index']);
+
 
 Route::get('/', [CoursesController::class,'index']);
-Route::get('/test-connection');

@@ -84,7 +84,10 @@ class CoursesController extends Controller
      */
     public function show($id)
     {
-        //
+        $course = Course::find($id);
+        return response()->json([
+            'course'=> $course
+        ]);
     }
 
     /**
@@ -95,7 +98,7 @@ class CoursesController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
